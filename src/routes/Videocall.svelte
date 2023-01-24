@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let channel: string;
 	import { env } from '$env/dynamic/public';
 	import { onDestroy } from 'svelte';
 	import AgoraRTC, {
@@ -7,7 +8,6 @@
 		type ILocalAudioTrack
 	} from 'agora-rtc-sdk-ng';
 
-	const channel = 'test';
 	const uid = 0;
 
 	let users: IAgoraRTCRemoteUser[] = [];

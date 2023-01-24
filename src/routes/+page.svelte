@@ -10,6 +10,7 @@
 		const module = await import('./Videocall.svelte');
 		Videocall = module.default;
 	});
+	let channel = 'test';
 </script>
 
 <h1>SvelteKit x Agora</h1>
@@ -22,9 +23,10 @@
 		>
 	</div>
 	<br>
-	<svelte:component this={Videocall} />
+	<svelte:component channel={channel} this={Videocall} />
 {:else}
 	<div style="text-align: center">
+		<input bind:value={channel} />
 		<button on:click={() => (inCall = true)}>Start call</button>
 	</div>
 {/if}
