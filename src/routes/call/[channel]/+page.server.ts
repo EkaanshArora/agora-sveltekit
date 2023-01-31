@@ -1,7 +1,8 @@
 import { env } from '$env/dynamic/private';
 import { env as publicEnv } from '$env/dynamic/public';
 import { error } from '@sveltejs/kit';
-import { RtcRole, RtcTokenBuilder } from 'agora-access-token';
+import TokenServerImport from 'agora-access-token';
+const { RtcRole, RtcTokenBuilder } = TokenServerImport;
 import type { PageServerLoadEvent } from '../$types';
 
 /** @type {import('./$types').} */
