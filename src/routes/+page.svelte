@@ -1,32 +1,16 @@
 <script>
 	import './styles.css'
-	import { onMount } from 'svelte';
-	/**
-	 * @type {typeof import("./Videocall.svelte").default}
-	 */
-	let Videocall;
-	let inCall = true;
-	onMount(async () => {
-		const module = await import('./Videocall.svelte');
-		Videocall = module.default;
-	});
-	let channel = 'test';
+	let channel = 'test'
+	let uid = 0
+	const handleClick = () => {
+		window.location.href = `/call/${channel}?uid=${uid}`
+	}
 </script>
 
 <h1>SvelteKit x Agora</h1>
-{#if inCall}
-	<div style="text-align: center">
-		<button
-			on:click={() => {
-				inCall = false;
-			}}>End Call</button
-		>
-	</div>
-	<br>
-	<svelte:component channel={channel} this={Videocall} />
-{:else}
-	<div style="text-align: center">
-		<input bind:value={channel} />
-		<button on:click={() => (inCall = true)}>Start call</button>
-	</div>
-{/if}
+  <label>
+    Email
+    <input bind:value={channel} name="channel" type="text">
+    <input bind:value={uid} name="uid" type="number">
+  </label>
+  <button on:click={handleClick}>Join Channel</button>

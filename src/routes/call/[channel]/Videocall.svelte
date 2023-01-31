@@ -1,5 +1,4 @@
 <script lang="ts">
-	export let channel: string;
 	import { env } from '$env/dynamic/public';
 	import { onDestroy } from 'svelte';
 	import AgoraRTC, {
@@ -7,9 +6,14 @@
 		type ILocalVideoTrack,
 		type ILocalAudioTrack
 	} from 'agora-rtc-sdk-ng';
+	import type { PageData } from './$types';
 
-	const uid = 0;
-
+	export let data: PageData;
+	const channel = data.channel;
+	const uid = parseInt(data.uid);
+	const token = data.token;
+	console.log(data)
+	
 	let users: IAgoraRTCRemoteUser[] = [];
 	let video: null | ILocalVideoTrack = null;
 	let audio: null | ILocalAudioTrack = null;
@@ -34,13 +38,6 @@
 		client.on('user-left', (u) => {
 			users = users.filter((user) => user.uid !== u.uid);
 		});
-
-		const response = await fetch('/api/token', {
-			method: 'POST',
-			body: JSON.stringify({ channel, uid }),
-			headers: { 'content-type': 'application/json' }
-		});
-		const { token } = await response.json();
 
 		await client.join(env.PUBLIC_APP_ID, channel, token, uid);
 		await client.publish([audio, video]);
