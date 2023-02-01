@@ -8,9 +8,14 @@
 </script>
 
 <h1>SvelteKit x Agora</h1>
-  <label>
-    Email
-    <input bind:value={channel} name="channel" type="text">
-    <input bind:value={uid} name="uid" type="number">
-  </label>
-  <button on:click={handleClick}>Join Channel</button>
+<div class="text-column">
+	<label>
+		Channel Name:
+		<input bind:value={channel} name="channel" type="text" />
+	</label>
+	<label>
+		UID:
+		<input bind:value={uid} name="uid" type="number" />
+	</label>
+	<button on:click={handleClick}>Join Channel</button>
+</div>
