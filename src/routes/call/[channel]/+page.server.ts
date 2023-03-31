@@ -1,7 +1,8 @@
 import { env } from '$env/dynamic/private';
 import { env as publicEnv } from '$env/dynamic/public';
 import { error } from '@sveltejs/kit';
-import { RtcRole, RtcTokenBuilder } from 'agora-token';
+import TokenServerImport from 'agora-token';
+const { RtcRole, RtcTokenBuilder } = TokenServerImport; // CJS module import
 import type { PageServerLoadEvent } from '../$types';
 
 export async function load(event: PageServerLoadEvent) {
