@@ -33,5 +33,10 @@
 	"type": "module",
 	"dependencies": {
 		"agora-rtc-sdk-ng": "^4.17.0"
+	},
+	"pnpm": {
+		"patchedDependencies": {
+			"agora-access-token@2.0.4": "patches/agora-access-token@2.0.4.patch"
+		}
 	}
 }

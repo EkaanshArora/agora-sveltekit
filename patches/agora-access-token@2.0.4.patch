@@ -1,0 +1,108 @@
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..f29c028028157da07b0649d175ee468ceb7529c9
+--- /dev/null
++++ b/pnpm-lock.yaml
+@@ -0,0 +1,35 @@
++lockfileVersion: '6.0'
++
++dependencies:
++  crc-32:
++    specifier: 1.2.0
++    version: 1.2.0
++  cuint:
++    specifier: 0.2.2
++    version: 0.2.2
++
++packages:
++
++  /crc-32@1.2.0:
++    resolution: {integrity: sha512-1uBwHxF+Y/4yF5G48fwnKq6QsIXheor3ZLPT80yGBV1oEUwpPojlEhQbWKVw1VwcTQyMGHK1/XMmTjmlsmTTGA==}
++    engines: {node: '>=0.8'}
++    hasBin: true
++    dependencies:
++      exit-on-epipe: 1.0.1
++      printj: 1.1.2
++    dev: false
++
++  /cuint@0.2.2:
++    resolution: {integrity: sha512-d4ZVpCW31eWwCMe1YT3ur7mUDnTXbgwyzaL320DrcRT45rfjYxkt5QWLrmOJ+/UEAI2+fQgKe/fCjR8l4TpRgw==}
++    dev: false
++
++  /exit-on-epipe@1.0.1:
++    resolution: {integrity: sha512-h2z5mrROTxce56S+pnvAV890uu7ls7f1kEvVGJbw1OlFH3/mlJ5bkXu0KRyW94v37zzHPiUd55iLn3DA7TjWpw==}
++    engines: {node: '>=0.8'}
++    dev: false
++
++  /printj@1.1.2:
++    resolution: {integrity: sha512-zA2SmoLaxZyArQTOPj5LXecR+RagfPSU5Kw1qP+jkWeNlrq+eJZyY2oS68SU1Z/7/myXM4lo9716laOFAVStCQ==}
++    engines: {node: '>=0.8'}
++    hasBin: true
++    dev: false
+diff --git a/src/AccessToken.js b/src/AccessToken.js
+index a11c4b0149e0e4cc7bf1aa1b596b0e41094a3a6a..cdd0da42869b8ea20353058d6e86b7f2aae38da7 100644
+--- a/src/AccessToken.js
++++ b/src/AccessToken.js
+@@ -1,4 +1,3 @@
+-var crypto = require('crypto');
+ var crc32 = require('crc-32');
+ var UINT32 = require('cuint').UINT32;
+ var version = "006";
+@@ -20,7 +19,7 @@ var AccessToken = function (appID, appCertificate, channelName, uid) {
+         this.uid = `${uid}`;
+     }
+ 
+-    this.build = function () {
++    this.build = async function () {
+         var m = Message({
+             salt: token.salt
+             , ts: token.ts
+@@ -33,7 +32,7 @@ var AccessToken = function (appID, appCertificate, channelName, uid) {
+             Buffer.from(token.uid, 'utf8'), 
+             m]);
+ 
+-        var signature = encodeHMac(token.appCertificate, toSign);
++        var signature = await encodeHMac(token.appCertificate, toSign);
+         var crc_channel = UINT32(crc32.str(token.channelName)).and(UINT32(0xffffffff)).toNumber();
+         var crc_uid = UINT32(crc32.str(token.uid)).and(UINT32(0xffffffff)).toNumber();
+         var content = AccessTokenContent({
+@@ -98,8 +97,12 @@ module.exports.priviledges = {
+     kRtmLogin: 1000
+ };
+ 
+-var encodeHMac = function (key, message) {
+-    return crypto.createHmac('sha256', key).update(message).digest();
++var encodeHMac = async function (keyz, message) {
++    let algorithm = { name: "HMAC", hash: "SHA-256" };
++    let key = await crypto.subtle.importKey("raw", keyz, algorithm, false, ["sign", "verify"]);
++    let signature = await crypto.subtle.sign(algorithm.name, key, message);
++
++    return signature;
+ };
+ 
+ var ByteBuf = function () {
+diff --git a/src/DynamicKey5.js b/src/DynamicKey5.js
+deleted file mode 100755
+index abee33e31fff683f3420175de9bd7e714892e395..0000000000000000000000000000000000000000
+diff --git a/src/RtcTokenBuilder.js b/src/RtcTokenBuilder.js
+index cf8f0d58eb8e8fcc1d78110f123cb3488128292b..c520d7d276f915506ba54e19090a59edf90da33d 100644
+--- a/src/RtcTokenBuilder.js
++++ b/src/RtcTokenBuilder.js
+@@ -57,7 +57,7 @@ class RtcTokenBuilder {
+     * @param {*} privilegeExpiredTs  represented by the number of seconds elapsed since 1/1/1970. If, for example, you want to access the Agora Service within 10 minutes after the token is generated, set expireTimestamp as the current timestamp + 600 (seconds).
+     * @return The new Token.
+     */
+-    static buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs) {
++    static async buildTokenWithAccount(appID, appCertificate, channelName, account, role, privilegeExpiredTs) {
+         this.key = new AccessToken(appID, appCertificate, channelName, account)
+         this.key.addPriviledge(Priviledges.kJoinChannel, privilegeExpiredTs)
+         if (role == Role.ATTENDEE ||
+@@ -67,7 +67,7 @@ class RtcTokenBuilder {
+             this.key.addPriviledge(Priviledges.kPublishVideoStream, privilegeExpiredTs)
+             this.key.addPriviledge(Priviledges.kPublishDataStream, privilegeExpiredTs)
+         }
+-        return this.key.build();
++        return await this.key.build();
+     }
+ }
+ 

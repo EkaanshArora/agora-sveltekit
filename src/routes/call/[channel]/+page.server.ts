@@ -20,7 +20,7 @@ export async function load(event: PageServerLoadEvent) {
 			uid = '0';
 		}
 
-		const token = RtcTokenBuilder.buildTokenWithUid(
+		const token = await RtcTokenBuilder.buildTokenWithUid(
 			publicEnv.PUBLIC_APP_ID,
 			env.APP_CERTIFICATE,
 			channel,
@@ -28,6 +28,8 @@ export async function load(event: PageServerLoadEvent) {
 			RtcRole.PUBLISHER,
 			Math.floor(Date.now() / 1000) + 600
 		);
+
+		console.log(token);
 
 		return { token, uid, channel };
 	} catch (e) {
