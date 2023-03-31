@@ -40,7 +40,7 @@ index 0000000000000000000000000000000000000000..f29c028028157da07b0649d175ee468c
 +    hasBin: true
 +    dev: false
 diff --git a/src/AccessToken.js b/src/AccessToken.js
-index a11c4b0149e0e4cc7bf1aa1b596b0e41094a3a6a..aa7e0a0e2f4af06d4b8f62b1d839ad8332c7be4a 100644
+index a11c4b0149e0e4cc7bf1aa1b596b0e41094a3a6a..7eaa8a7183c7a11fa07220e2ccb88f434ba9f43f 100644
 --- a/src/AccessToken.js
 +++ b/src/AccessToken.js
 @@ -1,4 +1,3 @@
@@ -75,13 +75,15 @@ index a11c4b0149e0e4cc7bf1aa1b596b0e41094a3a6a..aa7e0a0e2f4af06d4b8f62b1d839ad83
          var crc_channel = UINT32(crc32.str(token.channelName)).and(UINT32(0xffffffff)).toNumber();
          var crc_uid = UINT32(crc32.str(token.uid)).and(UINT32(0xffffffff)).toNumber();
          var content = AccessTokenContent({
-@@ -98,8 +99,15 @@ module.exports.priviledges = {
+@@ -98,8 +99,17 @@ module.exports.priviledges = {
      kRtmLogin: 1000
  };
  
 -var encodeHMac = function (key, message) {
 -    return crypto.createHmac('sha256', key).update(message).digest();
-+var encodeHMac = async function (keyz, message) {
++var encodeHMac = async function (keystring, message) {
++    let enc = new TextEncoder()
++    let keyz = enc.encode(keystring)
 +    console.log('keyz, message', keyz, message)
 +    let algorithm = { name: "HMAC", hash: "SHA-256" };
 +    console.log('algorithm', algorithm)
