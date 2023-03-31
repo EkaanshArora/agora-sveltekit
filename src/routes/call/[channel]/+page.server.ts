@@ -5,20 +5,19 @@ import TokenServerImport from 'agora-access-token';
 const { RtcRole, RtcTokenBuilder } = TokenServerImport;
 import type { PageServerLoadEvent } from '../$types';
 
-/** @type {import('./$types').} */
-export async function load( event: PageServerLoadEvent) {
-	const {params, url} = event;
-	let uid = url.searchParams.get('uid')
-  try {
-		const channel = new URLSearchParams(params).get('channel')
-		console.log(channel, uid)
+export async function load(event: PageServerLoadEvent) {
+	const { params, url } = event;
+	let uid = url.searchParams.get('uid');
+	try {
+		const channel = new URLSearchParams(params).get('channel');
+		console.log(channel, uid);
 
 		if (!channel) {
 			throw error(400, 'channel is required');
 		}
 
 		if (!uid) {
-			uid = '0'
+			uid = '0';
 		}
 
 		const token = RtcTokenBuilder.buildTokenWithUid(

@@ -27,6 +27,7 @@
 	<svelte:component data={data} this={Videocall} />
 {:else}
 	<div style="text-align: center">
-		<button on:click={() => (inCall = true)}>Start call</button>
+		<button on:click={() => (inCall = true)}>Rejoin</button>
+		<a href="/"><button>Back</button></a>
 	</div>
 {/if}
