@@ -2,7 +2,7 @@ lockfileVersion: '6.0'
 
 patchedDependencies:
   agora-access-token@2.0.4:
-    hash: o46jydj3oe7daguaw2igrdgsgq
+    hash: sm4jnyqb6xnlvjdmblm7xitxh4
     path: patches/agora-access-token@2.0.4.patch
 
 dependencies:
@@ -34,7 +34,7 @@ devDependencies:
     version: 5.49.0(eslint@8.32.0)(typescript@4.9.4)
   agora-access-token:
     specifier: ^2.0.4
-    version: 2.0.4(patch_hash=o46jydj3oe7daguaw2igrdgsgq)
+    version: 2.0.4(patch_hash=sm4jnyqb6xnlvjdmblm7xitxh4)
   eslint:
     specifier: ^8.28.0
     version: 8.32.0
@@ -839,7 +839,7 @@ packages:
       - supports-color
     dev: true
 
-  /agora-access-token@2.0.4(patch_hash=o46jydj3oe7daguaw2igrdgsgq):
+  /agora-access-token@2.0.4(patch_hash=sm4jnyqb6xnlvjdmblm7xitxh4):
     resolution: {integrity: sha512-RtOIvi4PqV1ok3rdnopMZeVwiUqZgG9Pp56kqxJc5cU/+ljRBzs1Al+IThD5ahm528dGsdY1TyP1bJdqmgBCbQ==}
     dependencies:
       crc-32: 1.2.0
