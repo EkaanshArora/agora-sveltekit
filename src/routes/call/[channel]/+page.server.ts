@@ -1,5 +1,5 @@
-import { env } from '$env/dynamic/private';
-import { env as publicEnv } from '$env/dynamic/public';
+import { APP_CERTIFICATE } from '$env/static/private';
+import { PUBLIC_APP_ID } from '$env/static/public';
 import { error } from '@sveltejs/kit';
 import TokenServerImport from 'agora-access-token';
 const { RtcRole, RtcTokenBuilder } = TokenServerImport;
@@ -22,8 +22,8 @@ export async function load(event: PageServerLoadEvent) {
 		let token = '';
 		try {
 			token = await RtcTokenBuilder.buildTokenWithUid(
-				publicEnv.PUBLIC_APP_ID,
-				env.APP_CERTIFICATE,
+				PUBLIC_APP_ID,
+				APP_CERTIFICATE,
 				channel,
 				parseInt(uid),
 				RtcRole.PUBLISHER,
