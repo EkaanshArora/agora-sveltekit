@@ -1,8 +1,7 @@
 import { env } from '$env/dynamic/private';
 import { env as publicEnv } from '$env/dynamic/public';
 import { error } from '@sveltejs/kit';
-import TokenServerImport from 'agora-access-token';
-const { RtcRole, RtcTokenBuilder } = TokenServerImport;
+import { RtcRole, RtcTokenBuilder } from 'agora-token';
 import type { PageServerLoadEvent } from '../$types';
 
 export async function load(event: PageServerLoadEvent) {
@@ -26,7 +25,8 @@ export async function load(event: PageServerLoadEvent) {
 			channel,
 			parseInt(uid),
 			RtcRole.PUBLISHER,
-			Math.floor(Date.now() / 1000) + 600
+			600,
+			600
 		);
 
 		return { token, uid, channel };
