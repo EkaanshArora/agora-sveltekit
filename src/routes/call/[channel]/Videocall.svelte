@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { env } from '$env/dynamic/public';
+	import { PUBLIC_APP_ID } from '$env/static/public';
 	import { onDestroy } from 'svelte';
 	import AgoraRTC, {
 		type IAgoraRTCRemoteUser,
@@ -39,7 +39,7 @@
 			users = users.filter((user) => user.uid !== u.uid);
 		});
 
-		await client.join(env.PUBLIC_APP_ID, channel, token, uid);
+		await client.join(PUBLIC_APP_ID, channel, token, uid);
 		await client.publish([audio, video]);
 	};
 
